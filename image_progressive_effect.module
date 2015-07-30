@@ -40,3 +40,32 @@ function image_imagemagick_image_progressive_effect($image, $params = array()) {
 
   return TRUE;
 }
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Set a warning message if the progressive effect is not the last on the list.
+ */
+function image_progressive_effect_form_image_style_form_alter(&$form, &$form_state, $form_id) {
+  $style_name = $form['name']['#default_value'];
+  $progressive_effect_attached = FALSE;
+  $is_not_last = FALSE;
+  // Find out if the progressive effect is attached to the image style
+  // and if the effect is the last on the list
+  foreach (element_children($form['effects']) as $ieid) {
+    if (is_int($ieid)) {
+      $effect = image_effect_load($ieid, $style_name);
+      if ($effect['name'] == 'image_progressive_effect') {
+        $progressive_effect_attached = TRUE;
+        $is_not_last = FALSE;
+      }
+      else {
+        $is_not_last = TRUE;
+      }
+    }
+  }
+  // Set a warning message if the progressive effect is the last on the list
+  if ($progressive_effect_attached && $is_not_last) {
+    drupal_set_message(t('The "Progressive" image effect must be the last on the list to take effect.'), 'warning', FALSE);
+  }
+}
