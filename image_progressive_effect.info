@@ -1,0 +1,6 @@
+name = Image effect: Progressive
+description = Adds an image effect to generate progressive images
+core = 7.x
+package = Media
+
+dependencies[] = image

@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * Implements hook_image_effect_info().
+ */
+function image_progressive_effect_image_effect_info() {
+  $effects = array();
+
+  $effects['image_progressive_effect'] = array(
+    'label' => t('Progressive'),
+    'help' => t('Set interlace option.'),
+    'effect callback' => 'image_progressive_effect',
+    'dimensions passthrough' => TRUE,
+  );
+
+  return $effects;
+}
+
+/**
+ * Invoke the image effect.
+ */
+function image_progressive_effect($image, $data) {
+  return image_toolkit_invoke('image_progressive_effect', $image);
+}
+
+/**
+ * Set the interlace bit (GD).
+ */
+function image_gd_image_progressive_effect($image, $params = array()) {
+  imageinterlace($image->resource, TRUE);
+
+  return TRUE;
+}
+
+/**
+ * Set the interlace bit (ImageMagick).
+ */
+function image_imagemagick_image_progressive_effect($image, $params = array()) {
+  $image->setInterlaceScheme(Imagick::INTERLACE_PLANE);
+
+  return TRUE;
+}
