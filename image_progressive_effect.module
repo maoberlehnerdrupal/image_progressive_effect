@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Image progressive effect module.
+ */
 
 /**
  * Implements hook_image_effect_info().
@@ -50,8 +54,8 @@ function image_progressive_effect_form_image_style_form_alter(&$form, &$form_sta
   $style_name = $form['name']['#default_value'];
   $progressive_effect_attached = FALSE;
   $is_not_last = FALSE;
-  // Find out if the progressive effect is attached to the image style
-  // and if the effect is the last on the list
+  // Find out if the progressive effect is attached to the
+  // image style and if the effect is the last on the list.
   foreach (element_children($form['effects']) as $ieid) {
     if (is_int($ieid)) {
       $effect = image_effect_load($ieid, $style_name);
@@ -64,7 +68,7 @@ function image_progressive_effect_form_image_style_form_alter(&$form, &$form_sta
       }
     }
   }
-  // Set a warning message if the progressive effect is the last on the list
+  // Set a warning message if the progressive effect is the last on the list.
   if ($progressive_effect_attached && $is_not_last) {
     drupal_set_message(t('The "Progressive" image effect must be the last on the list to take effect.'), 'warning', FALSE);
   }
